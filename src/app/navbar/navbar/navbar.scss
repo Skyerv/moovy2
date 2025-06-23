@@ -1,0 +1,41 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  padding: 0 16px;
+  background-color: var(--primary1);
+
+  .logo {
+    height: 30px;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .nav-links {
+    margin-left: 16px;
+
+    a {
+      margin-right: 8px;
+
+      &.active {
+        font-weight: bold;
+        color: var(--accent15);
+        //text-decoration: underline;
+      }
+    }
+  }
+}
+
+.navbar-fade {
+  margin-top: 62px;
+  position: fixed;
+  z-index: 1001;
+  height: 100px; /* ajuste a altura do fade */
+  width: 100%;
+  background: linear-gradient(to bottom, rgb(32, 32, 32), rgba(28, 28, 28, 0));
+  pointer-events: none; /* para não atrapalhar cliques */
+}
+

@@ -1,0 +1,62 @@
+<mat-card class="modal-card" *ngIf="movieDetails$ | async as movie">
+  <div class="modal-header">
+    <h2 class="modal-title">{{ movie.title }}</h2>
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon class="close-button">close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="movie-details-container">
+    <div class="poster-section">
+      <img
+        class="modal-image"
+        [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+        [alt]="movie.title"
+      />
+    </div>
+
+    <div class="info-section">
+      <mat-card-content class="modal-content">
+        <p class="overview">{{ movie.overview }}</p>
+
+        <div class="rating-info">
+          <p>
+            <mat-icon>star_border</mat-icon>
+            <strong>{{ movie.vote_average | number: '1.1-1' }}</strong>
+            <span>({{ movie.vote_count }} votes)</span>
+          </p>
+        </div>
+
+        <div class="details">
+          <p><strong>Release Date:</strong> {{ movie.release_date | date }}</p>
+          <p><strong>Budget:</strong> {{ movie.budget | currency }}</p>
+          <p><strong>Revenue:</strong> {{ movie.revenue | currency }}</p>
+          <p>
+            <strong>Languages:</strong>
+            <span
+              *ngFor="let language of movie.spoken_languages; let last = last"
+            >
+              {{ language.english_name }}<span *ngIf="!last">, </span>
+            </span>
+          </p>
+        </div>
+
+        <div class="rate-section">
+          <mat-icon
+            *ngFor="let star of stars; let i = index"
+            (mouseenter)="hoverRating(i + 1)"
+            (mouseleave)="hoverRating(0)"
+            (click)="setRating(i + 1)"
+            [class.filled]="i < (hoveredRating ||( rating ?? 0))"
+            >star</mat-icon
+          >
+        </div>
+      </mat-card-content>
+    </div>
+  </div>
+  <mat-card-actions class="modal-actions">
+    <button class="send-button" matButton="elevated" (click)="submitRating()">Send rating</button>
+  </mat-card-actions>
+</mat-card>

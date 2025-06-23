@@ -1,0 +1,17 @@
+<h2 class="title" mat-dialog-title>Select collection</h2>
+<h3 class="subtitle" mat-dialog-content>Select to which collections you want to add the movies.</h3>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <mat-selection-list [(ngModel)]="selectedCollections">
+    <mat-list-option
+      *ngFor="let collection of collections"
+      [value]="collection.id"
+    >
+      {{ collection.title }}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onConfirm()">Add</button>
+</mat-dialog-actions>

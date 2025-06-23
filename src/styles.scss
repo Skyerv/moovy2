@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "./app/shared/variables";
+@include mat.core();
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+html {
+  --mat-form-field-filled-focus-active-indicator-color: var(--accent0);
+  --mat-form-field-focus-select-arrow-color: var(--accent0);
+  --mat-form-field-filled-caret-color: var(--accent2);
+  --mat-form-field-filled-focus-active-indicator-color: var(--accent1);
+  --mat-form-field-filled-focus-label-text-color: var(--accent2);
+  --mat-form-field-outlined-caret-color: var(--accent1);
+  --mat-form-field-outlined-focus-outline-color: var(--accent1);
+  --mat-checkbox-selected-icon-color: var(--accent0);
+  --mat-checkbox-selected-focus-icon-color: var(--accent0);
+    --mat-checkbox-selected-hover-icon-color: var(--accent0);
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: linear-gradient(
+      180deg,
+      var(--primary0),
+      var(--primary1),
+      var(--primary2)
+    )
+    no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+  max-width: 800px !important;
+  min-width: 700px !important;
+}
+
+.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled {
+  border-radius: 8px !important;
+}

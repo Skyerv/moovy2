@@ -1,0 +1,33 @@
+:root {
+  /* Primary - Light Backgrounds */
+  --primary0: #FFFFFF; /* True white - main background */
+  --primary1: #F9F9F9; /* Near-white - surface variant */
+  --primary2: #F2F2F7; /* Subtle grayish white - elevated surfaces */
+
+  /* Secondary - Grays for borders, surfaces, and text */
+  --secondary0: #E5E5EA; /* Light Gray - cards, inputs */
+  --secondary1: #D1D1D6; /* Light border color */
+  --secondary2: #A1A1AA; /* Medium Gray - muted text */
+  --secondary3: #6E6E73; /* Darker text */
+  --secondary4: #3A3A3C; /* For high-contrast muted elements */
+
+  /* Accent - Oranges (same as dark theme) */
+  --accent0: #FF9500;  /* Amber Orange - main accent/CTA */
+  --accent1: #FFA94D;  /* Soft Orange - hover states */
+  --accent15: #e79135;  /* Soft Orange - hover states */
+  --accent2: #CC7722;  /* Burnt Orange - earthy alt accent */
+  --accent3: #FFD8A8;  /* Apricot Tint - subtle highlight */
+  --accent4: #C25B0B;  /* Dark Orange - warning emphasis */
+  --accent5: #94460a;  /* Dark Orange - warning emphasis */
+
+  --danger0: #FF453A;  /* Main danger/red - delete buttons, errors */
+  --danger1: #FF6B61;  /* Hover state or softer delete */
+  --danger2: #FFB3AD;  /* Light tint - error backgrounds or highlights */
+  --danger3: #FFDAD6;  /* Very soft tint - warning bg in light mode */
+  --danger4: #B3261E;  /* Dark red - strong emphasis or dark bg danger */
+
+  /* Utility */
+  --text-primary: #1C1C1E; /* Near-black text */
+  --text-muted: var(--secondary3);
+  --border-color: var(--secondary1);
+}

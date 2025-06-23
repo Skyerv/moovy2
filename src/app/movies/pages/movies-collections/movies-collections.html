@@ -1,0 +1,30 @@
+<div class="collections-page">
+  <div class="collections-content">
+    <div class="collections-content__header">
+      <h1>Your Collections</h1>
+      <button
+        matButton="filled"
+        color="primary"
+        class="add-collection-btn"
+        (click)="openNewCollectionDialog()"
+      >
+        New collection
+      </button>
+    </div>
+
+    <div class="collections-grid">
+      @for (collection of collections; track collection.id) {
+      <mat-card
+        class="collection-card"
+        appearance="outlined"
+        (click)="goToCollectionsDetailsPage(collection.id)"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ collection.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>{{ collection.description }}</mat-card-content>
+      </mat-card>
+      }
+    </div>
+  </div>
+</div>

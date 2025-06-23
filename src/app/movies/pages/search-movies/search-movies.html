@@ -1,0 +1,94 @@
+<div class="header-text">
+  <h1>Your movie saving - simplified!</h1>
+  <h3>
+    Search for movies and add it to your collections in a matter of seconds.
+  </h3>
+</div>
+
+<div class="carousel">
+  <div class="carousel-track" [style.transform]="getTransform()">
+    @for (movie of carouselMovies; track movie.id; let idx = $index) {
+    <div
+      class="carousel-slide"
+      [style.backgroundImage]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'"
+    ></div>
+    }
+  </div>
+</div>
+
+<div class="carousel-overlay"></div>
+
+<div class="movies-search">
+  <mat-form-field class="movies-search__input">
+    <mat-label>Search movie by name or keyword</mat-label>
+    <input
+      matInput
+      type="text"
+      (ngModelChange)="onSearchInput($event)"
+      [ngModel]="''"
+    />
+  </mat-form-field>
+</div>
+
+<div class="loader-container" *ngIf="isLoading">
+  <mat-spinner diameter="48" color="primary"></mat-spinner>
+</div>
+<div class="movies-grid">
+  @if (!isLoading) { @for (movie of movies; track movie.id) {
+  <mat-card
+    class="movie-card"
+    [class.selected]="isMovieSelected(movie.id)"
+    (mouseenter)="hoveredMovieId = movie.id"
+    (mouseleave)="hoveredMovieId = null"
+    (click)="openMovieDialog(movie.id)"
+  >
+    <div
+      class="checkbox-overlay"
+      *ngIf="hoveredMovieId === movie.id || isMovieSelected(movie.id)"
+    >
+      <mat-checkbox
+        (click)="$event.stopPropagation()"
+        [checked]="isMovieSelected(movie.id)"
+        (change)="toggleMovieSelection(movie.id)"
+      ></mat-checkbox>
+    </div>
+
+    <img mat-card-image [src]="movie.poster_full_url" [alt]="movie.title" />
+
+    <mat-card-header>
+      <mat-card-title class="movie-title" matTooltip="{{ movie.title }}">
+        {{ movie.title }}
+      </mat-card-title>
+      <mat-card-subtitle
+        >{{ movie.release_date | date: 'yyyy' }}</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-actions>
+      <span class="rating">
+        <mat-icon>star_border</mat-icon>
+        {{ movie.vote_average | number: '1.1-1' }}
+      </span>
+    </mat-card-actions>
+  </mat-card>
+  } }
+</div>
+
+<button
+  *ngIf="selectedMovieIds.size > 0"
+  matButton="filled"
+  class="add-to-collection-button"
+  color="primary"
+  (click)="openAddToCollectionDialog()"
+>
+  + Add to collection
+</button>
+
+<mat-paginator
+  class="paginator"
+  [length]="totalResults"
+  [pageSize]="18"
+  [pageSizeOptions]="[18]"
+  (page)="onPageChange($event)"
+  aria-label="Page selection"
+></mat-paginator>

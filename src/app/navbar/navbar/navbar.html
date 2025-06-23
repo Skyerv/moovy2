@@ -1,0 +1,15 @@
+<mat-toolbar class="navbar">
+  <img class="logo" src="/assets/moovy_logo.png">
+
+  <nav class="nav-links">
+    <a mat-button routerLink="/search" routerLinkActive="active">Search</a>
+    <a mat-button routerLink="/collections" routerLinkActive="active">Collections</a>
+  </nav>
+  
+  <span class="spacer"></span>
+
+  <button mat-icon-button (click)="toggleTheme()" [matTooltip]="isDarkMode ? 'Light Mode' : 'Dark Mode'">
+    <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
+</mat-toolbar>
+<!-- <div class="navbar-fade"></div> -->

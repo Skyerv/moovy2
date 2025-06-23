@@ -1,0 +1,67 @@
+<div class="collections-details">
+  <div class="collections-details__content">
+    @if (collection) {
+    <div class="collections-details__content__header">
+      <div class="text">
+        <h1><strong>{{ collection.title }}</strong></h1>
+        <p>{{ collection.description }}</p>
+      </div>
+      <div class="buttons">
+        <button
+          class="buttons__delete-button"
+          matButton="filled"
+          [disabled]="selectedMovieIds.size == 0"
+          (click)="removeMoviesFromCollection()"
+        >
+          Remove from collection
+        </button>
+      </div>
+    </div>
+
+    <div class="movies-grid">
+      @for (movie of movieDetailsList; track $index) {
+      <mat-card
+        class="movie-card"
+        [class.selected]="isMovieSelected(movie.id)"
+        (mouseenter)="hoveredMovieId = movie.id"
+        (mouseleave)="hoveredMovieId = null"
+        (click)="openMovieDialog(movie.id)"
+      >
+        <div
+          class="checkbox-overlay"
+          *ngIf="hoveredMovieId === movie.id || isMovieSelected(movie.id)"
+        >
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            [checked]="isMovieSelected(movie.id)"
+            (change)="toggleMovieSelection(movie.id)"
+          ></mat-checkbox>
+        </div>
+
+        <img
+          mat-card-image
+          [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path"
+          [alt]="movie.title"
+        />
+
+        <mat-card-header>
+          <mat-card-title class="movie-title" matTooltip="{{ movie.title }}">
+            {{ movie.title }}
+          </mat-card-title>
+          <mat-card-subtitle
+            >{{ movie.release_date | date: 'yyyy' }}</mat-card-subtitle
+          >
+        </mat-card-header>
+
+        <mat-card-actions>
+          <span class="rating">
+            <mat-icon color="warn">star</mat-icon>
+            {{ movie.vote_average | number: '1.1-1' }}
+          </span>
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
+    }
+  </div>
+</div>

@@ -1,38 +1,25 @@
 import { Routes } from '@angular/router';
 import { SearchMovies } from './movies/pages/search-movies/search-movies';
 import { MoviesCollections } from './movies/pages/movies-collections/movies-collections';
-import { MovieDetails } from './movies/pages/movie-details/movie-details';
 import { CollectionDetails } from './movies/pages/collection-details/collection-details';
+import { MovieDetailsDialog } from './movies/components/movie-details-dialog/movie-details-dialog';
 
 export const routes: Routes = [
   {
     path: '',
     component: SearchMovies,
-    children: [
-      {
-        path: 'modal/:id',
-        component: MovieDetails,
-        outlet: 'modal',
-      },
-    ],
+    children: [{ path: 'movies/:id/details', component: MovieDetailsDialog }],
   },
-  { path: 'search', component: SearchMovies },
+  {
+    path: 'movies',
+    component: SearchMovies,
+    children: [{ path: 'movies/:id/details', component: MovieDetailsDialog }],
+  },
   {
     path: 'collections',
     children: [
       { path: '', component: MoviesCollections },
       { path: ':id', component: CollectionDetails },
-    ],
-  },
-  {
-    path: 'movies',
-    component: SearchMovies,
-    children: [
-      {
-        path: 'modal/:id',
-        component: MovieDetails,
-        outlet: 'modal',
-      },
     ],
   },
 ];

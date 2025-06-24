@@ -32,7 +32,6 @@ export class MoviesCollections {
 
     dialogRef.afterClosed().subscribe((result: MovieCollection | undefined) => {
       if (result) {
-        console.log(result);
         this.collectionService.addCollection(result);
 
         setTimeout(() => {

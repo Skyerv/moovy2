@@ -115,10 +115,4 @@ export class MovieService {
       { value: rating }
     );
   }
-
-  findById(id: string) {}
-
-  findAll() {}
-
-  postRating(id: string) {}
 }

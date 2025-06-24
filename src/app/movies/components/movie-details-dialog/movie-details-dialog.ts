@@ -8,17 +8,13 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  createNewMovieDetails,
-  Movie,
-  MovieDetails,
-} from '../../models/movie.interface';
 import { MovieService } from '../../services/movie-service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MovieDetails } from '../../models/movie.interface';
 
 @Component({
   selector: 'app-movie-details-dialog',

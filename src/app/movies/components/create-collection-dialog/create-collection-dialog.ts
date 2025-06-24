@@ -13,6 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-create-collection-dialog',
@@ -23,7 +25,9 @@ import { MatInputModule } from '@angular/material/input';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDividerModule,
     MatButtonModule,
+    MatCardModule,
   ],
   templateUrl: './create-collection-dialog.html',
   styleUrl: './create-collection-dialog.scss',

@@ -1,15 +1,19 @@
 <h2 class="title" mat-dialog-title>Select collection</h2>
-<h3 class="subtitle" mat-dialog-content>Select to which collections you want to add the movies.</h3>
+<h3 class="subtitle" mat-dialog-content>
+  Select to which collection you want to add the movies.
+</h3>
 <mat-divider></mat-divider>
+
 <mat-dialog-content>
-  <mat-selection-list [(ngModel)]="selectedCollections">
-    <mat-list-option
+  <mat-radio-group [(ngModel)]="selectedCollectionId">
+    <mat-radio-button
       *ngFor="let collection of collections"
       [value]="collection.id"
+      class="radio-option"
     >
       {{ collection.title }}
-    </mat-list-option>
-  </mat-selection-list>
+    </mat-radio-button>
+  </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>

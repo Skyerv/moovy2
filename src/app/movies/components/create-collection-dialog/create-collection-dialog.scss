@@ -1,0 +1,14 @@
+.title {
+  font-size: 1.4rem;
+  margin-bottom: 0px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.send-button {
+  background-color: var(--accent15) !important;
+  color: var(--primary1) !important;
+}

@@ -8,6 +8,7 @@
 
   .logo {
     height: 30px;
+    cursor: pointer;
   }
 
   .spacer {
@@ -23,7 +24,6 @@
       &.active {
         font-weight: bold;
         color: var(--accent15);
-        //text-decoration: underline;
       }
     }
   }
@@ -33,9 +33,8 @@
   margin-top: 62px;
   position: fixed;
   z-index: 1001;
-  height: 100px; /* ajuste a altura do fade */
+  height: 100px;
   width: 100%;
   background: linear-gradient(to bottom, rgb(32, 32, 32), rgba(28, 28, 28, 0));
-  pointer-events: none; /* para não atrapalhar cliques */
+  pointer-events: none;
 }
-

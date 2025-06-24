@@ -1,5 +1,6 @@
-<h2 mat-dialog-title>New Collection</h2>
-<mat-dialog-content>
+<h1 mat-dialog-title class="title">Create new collection</h1>
+<mat-divider></mat-divider>
+<mat-dialog-content class="content">
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Title</mat-label>
     <input matInput [(ngModel)]="title" />
@@ -12,5 +13,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+  <button mat-raised-button class="send-button" (click)="onCreate()">Create</button>
 </mat-dialog-actions>

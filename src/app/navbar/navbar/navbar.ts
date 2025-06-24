@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MaterialSharedModule } from '../../shared/material-shared.module';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   isDarkMode = false;
+
+  constructor (private router: Router) {}
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -39,5 +41,9 @@ export class NavbarComponent implements OnInit {
     document.body.classList.remove('dark-theme');
     localStorage.setItem('theme', 'light');
     this.isDarkMode = false;
+  }
+
+  goToSearchPage(): void {
+    this.router.navigate(['/']);
   }
 }

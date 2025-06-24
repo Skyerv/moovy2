@@ -49,9 +49,9 @@
 
       &:hover {
         cursor: pointer;
-        transform: scale(1.05); // aumenta 3%
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); // sombra opcional
-        z-index: 1; // para aparecer acima dos vizinhos se necessário
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+        z-index: 1; 
       }
     }
 

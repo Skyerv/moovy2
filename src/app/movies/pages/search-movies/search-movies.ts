@@ -5,14 +5,19 @@ import {
   Movie,
   MovieSearchQuery,
 } from '../../models/movie.interface';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MovieDetails } from '../movie-details/movie-details';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MovieDetailsDialog } from '../../components/movie-details-dialog/movie-details-dialog';
-import { CreateCollectionDialog } from '../../components/create-collection-dialog/create-collection-dialog';
 import { AddToCollectionDialog } from '../../components/add-to-collection-dialog/add-to-collection-dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-search-movies',
@@ -22,23 +27,29 @@ import { AddToCollectionDialog } from '../../components/add-to-collection-dialog
 })
 export class SearchMovies {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private searchInput$ = new Subject<string>();
+
+  searchQuery: MovieSearchQuery = createNewMovieSearchQuery();
   totalResults = 0;
   isLoading: boolean = false;
-  searchQuery: MovieSearchQuery = createNewMovieSearchQuery();
-  private searchInput$ = new Subject<string>();
   movies!: Movie[];
-  carouselMovies!: Movie[];
+  carouselMovies: Movie[] = [];
   lastSearchTerm: string = '';
   currentSlide = 0;
   intervalId: any;
-  selectedMovieIds = new Set<number>(); 
+  selectedMovieIds = new Set<number>();
   hoveredMovieId: number | null = null;
+
+  private sub!: Subscription;
 
   constructor(
     private movieService: MovieService,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +68,24 @@ export class SearchMovies {
           this.totalResults = 0;
         }
       });
+
+    this.sub = this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        const child = this.route.firstChild;
+        if (child?.snapshot.paramMap.has('id')) {
+          const movieId = +child.snapshot.paramMap.get('id')!;
+          if (
+            !this.dialog.openDialogs.find((d) => d.id === 'details-' + movieId)
+          ) {
+            this.openMovieDialog(movieId, true);
+          }
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
   }
 
   onSearchInput(value: string): void {
@@ -86,7 +115,7 @@ export class SearchMovies {
   }
 
   startAutoSlide() {
-    clearInterval(this.intervalId); 
+    clearInterval(this.intervalId);
 
     this.intervalId = setInterval(() => {
       if (this.carouselMovies.length > 1) {
@@ -94,14 +123,15 @@ export class SearchMovies {
           (this.currentSlide + 1) % this.carouselMovies.length;
       }
       this.cdr.detectChanges();
-    }, 5000); 
+    }, 5000);
   }
 
   getTransform(): string {
-    return `translateX(-${(this.currentSlide * 100)}%)`;
+    return `translateX(-${this.currentSlide * 100}%)`;
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
     clearInterval(this.intervalId);
   }
 
@@ -114,9 +144,9 @@ export class SearchMovies {
       const validMovies = response.results.filter((m) => m.backdrop_path);
 
       this.carouselMovies = validMovies;
-      this.currentSlide = 0; 
+      this.currentSlide = 0;
 
-      clearInterval(this.intervalId); 
+      clearInterval(this.intervalId);
 
       if (this.carouselMovies.length > 1) {
         this.startAutoSlide();
@@ -124,54 +154,65 @@ export class SearchMovies {
     });
   }
 
-  prevSlide() {
-    if (this.carouselMovies.length === 0) return;
+  openMovieDialog(movieId: number, viaRoute = false): void {
+    // I had to take out the logic of making the dialog open in
+    // a new route because it was causing an error that I could
+    // not figure out.
 
-    this.currentSlide =
-      (this.currentSlide - 1 + this.carouselMovies.length) %
-      this.carouselMovies.length;
-  }
+    // Maybe if I put the movies into a NgRx Store it would help,
+    // but unfortunately I don't have enough time to do it.
 
-  nextSlide() {
-    if (this.carouselMovies.length === 0) return;
+    // If you want to see the routing logic working,
+    // just un-comment the code lines below.
+    
+    // The routing logic will work, but some other stuff will break.
 
-    this.currentSlide = (this.currentSlide + 1) % this.carouselMovies.length;
-  }
+    setTimeout(() => {
+      if (!viaRoute) {
+        //this.router.navigate(['/movies', movieId, 'details']);
+      }
+    }, 300);
 
-  goToSlide(index: number) {
-    if (index >= 0 && index < this.carouselMovies.length) {
-      this.currentSlide = index;
-    }
-  }
-
-  openMovieDialog(movieId: number): void {
-    this.dialog.open(MovieDetailsDialog, {
+    const dialogRef = this.dialog.open(MovieDetailsDialog, {
+      id: 'details-' + movieId,
       data: movieId,
       width: '600px',
       panelClass: 'custom-dialog-container',
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+      //this.router.navigate(['/movies']);
+    });
   }
 
   toggleMovieSelection(movieId: number): void {
-  if (this.selectedMovieIds.has(movieId)) {
-    this.selectedMovieIds.delete(movieId);
-  } else {
-    this.selectedMovieIds.add(movieId);
+    if (this.selectedMovieIds.has(movieId)) {
+      this.selectedMovieIds.delete(movieId);
+    } else {
+      this.selectedMovieIds.add(movieId);
+    }
   }
-}
 
-isMovieSelected(movieId: number): boolean {
-  return this.selectedMovieIds.has(movieId);
-}
+  isMovieSelected(movieId: number): boolean {
+    return this.selectedMovieIds.has(movieId);
+  }
 
-openAddToCollectionDialog(): void {
-  const dialogRef = this.dialog.open(AddToCollectionDialog, {
-    data: { moviesIds: [...this.selectedMovieIds] },
-    width: '400px',
-  });
+  openAddToCollectionDialog(): void {
+    const dialogRef = this.dialog.open(AddToCollectionDialog, {
+      data: { moviesIds: [...this.selectedMovieIds] },
+      width: '400px',
+    });
 
-  dialogRef.afterClosed().subscribe(() => {
-    this.selectedMovieIds.clear(); 
-  });
-}
+    dialogRef
+      .afterClosed()
+      .pipe(debounceTime(300))
+      .subscribe((collectionId) => {
+        this.selectedMovieIds.clear();
+        clearInterval(this.intervalId);
+        this.router.navigate(['/collections', collectionId]);
+        this.snackBar.open('Successfully added movie(s) to collection.', 'OK', {
+          duration: 5000,
+        });
+      });
+  }
 }

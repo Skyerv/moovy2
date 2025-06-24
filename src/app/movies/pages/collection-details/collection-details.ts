@@ -65,7 +65,7 @@ export class CollectionDetails {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Erro ao buscar detalhes dos filmes:', err);
+        console.error('Could not get movies details:', err);
       },
     });
   }
